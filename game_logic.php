@@ -14,9 +14,10 @@ $s2 .="222222222";
 $s2 .="222222222";
 
 $pos=0;
-$new = 0;
+$new=0;
 $old=0;
-$ply=1;
+$ply1=0;
+$ply2=0;
 
 for($i=0;$i<45;$i++)
 {
@@ -40,20 +41,27 @@ $pos = $new - $old;
 echo "	new =$new <br/>
 		old = $old<br/>
 		pos= $pos <br/>
-		player $ply<br/>
+		ply1=$ply1<br/>
+		ply2 =$ply2<br/>
 		old.= $s1<br/>
 		mov= $s2<br/>"; 
 
-
-for($i = $new+$pos;$i>=0&&$i<45;)
+if(($pos == 1 || $pos == -1 || $pos == 9 || $pos == -9 || $pos == 8 || $pos == -8 || $pos == 10 || $pos == -10) && (($ply1==0&&$ply2==1) || ($ply1==0&&$ply2==2) || ($ply1==1&&$ply2==0) || ($ply1==2&&$ply2==0)))
 {
-	if($s2[$i] != 0 && $s2[$i] != $ply)
+	for($i = $new+$pos;$i>=0&&$i<45;)
 	{
-		 $s2[$i] = 0;
-		 $i += $pos;
+		if($s2[$i] != 0 && $s2[$i] != $ply2)
+		{
+			$s2[$i] = 0;
+		 	$i += $pos;
+		}
+		else 
+		break;
 	}
-	else 
-	break;
+}
+else
+{
+	echo "Invalid Move<br/>";
 }
 
 echo "curr= $s2";
