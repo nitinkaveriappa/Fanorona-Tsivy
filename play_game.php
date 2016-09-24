@@ -28,7 +28,7 @@ $s1=$result['node_list'];
 echo "s1=$s1<br/>";
 
 $start = new game_logic($s1,$s2);
-$start->run();
+$start->run_game();
 
 
 	
