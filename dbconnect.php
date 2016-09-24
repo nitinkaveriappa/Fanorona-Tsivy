@@ -17,6 +17,8 @@ function db_connect() {
 			// set the PDO error mode to exception
 			$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			echo "Connected successfully"; 
+			$setDBQuery = $connection->prepare("USE fanodb;");
+			$setDBQuery->execute();
 		}
 		// If connection was not successful, handle the error
 		catch(PDOException $e)
