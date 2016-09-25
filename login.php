@@ -15,9 +15,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	{  //header("Location:index.php?type=err");
 		echo "failed";   					}
 	
-	
-	
-	 $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdahgcUAAAAAOd6zMYFIhe7KLFIN_m-yva7iWt7&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+	//Load Secret key from config file
+	$config = parse_ini_file('config.ini'); 
+	$key = $config['secret'];
+	//captcha
+	 $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$key."&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
 	 $data = json_decode($response);
 	 if($data->success==false)
         {
