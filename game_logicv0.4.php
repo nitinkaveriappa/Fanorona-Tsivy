@@ -12,7 +12,7 @@ class game_logic
 	var $player;
 	
 	//Set variables
-	function __construct($node1, $node2, $move_count, $restricted_moves){
+	function __construct($node1, $node2, $move_count, $restrict_moves){
 		$this->s1 = $node1;
 		$this->s2 = $node2;
 
