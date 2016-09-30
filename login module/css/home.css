@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{
+	margin:0px;
+
+	
+}
+.container {
+	margin: 0px;
+	padding: 0px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color:#FFC;
+}
+
+.header {
+	left:0px;
+	top:0px;
+	border:none;
+	padding-left:0px;
+	padding-top:0px;
+	height:130px;
+	width:100%;
+	background-color:#FF9;
+	overflow:hidden;
+	display:block;
+}
+
+.heading {
+	font: Arial, Helvetica, sans-serif;
+	font-size: 36px;
+	font-weight: 800;
+	color: #C60;
+}
+
+.Title {
+	font-family:Papyrus;
+	color:#C60;
+	padding-top: 20px;
+	padding-bottom:10px;
+	padding-left:60px;
+	padding-right:20px;
+}
+.MainTitle {
+	font-size:46px;
+	font-weight:700;
+	font-stretch:extra-expanded;
+	font-style:italic;
+}
+.SubTitle {
+	font-size:28px;
+	font-style:oblique;
+}
+
+
+.Logout {
+	color:#000;
+}
+
+.contents {
+	position:relative;
+	overflow:hidden;
+	padding-top:100px;
+}
+
+
+.show {
+	display:block;
+}
