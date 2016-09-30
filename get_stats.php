@@ -40,7 +40,7 @@ class stats
 		echo "<br/>Player Stats";
 		echo "<table>"; // start a table tag in the HTML
 
-		echo "<tr><td>" . $this->player_name . "</td><td>" . $this->win_count . "</td></td>". $this->draw_count . "</td></td>" . $this->loss_count . "</td></tr>";
+		echo "<tr><td>" . $this->player_name . "</td><td>" . $this->win_count . "</td><td>". $this->draw_count . "</td><td>" . $this->loss_count . "</td></tr>";
 
 		echo "</table>"; //Close the table in HTML
 	}
