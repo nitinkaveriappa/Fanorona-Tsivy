@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Paurav & Nitin
- * Date: 9/18/2016
- * Time: 10:09 PM
- */
 class game_logic
 {
 	var $s1;
 	var $s2;
+	var $move_num;
+	var $restrict_move;
 	var $curr;
 	var $pos;
 	var $new;
@@ -16,10 +12,13 @@ class game_logic
 	var $player;
 	
 	//Set variables
-	function __construct($node1, $node2){
+	function __construct($node1, $node2, $move_count, $restricted_moves){
 		$this->s1 = $node1;
 		$this->s2 = $node2;
-	
+
+		$this->move_num = $move_count;
+		$this->restrict_move = explode(",",$restrict_moves);
+		
 		$this->curr = $this->s2;
 		
 		$this->pos=0;
@@ -47,7 +46,8 @@ class game_logic
 		return $flag;
 	}
 
-	function check_validmove(){
+	function check_validmove()
+	{
 		$validate = false;
 		//To validate if legal move
 		if(($this->old % 2) == 0)
@@ -57,7 +57,12 @@ class game_logic
 		else {
 			$valid = array("-10", "-9", "-8", "-1", "1", "8", "9", "10");
 		}
-
+		
+		//Removes the previous move direction value to prevent move again in the same direction
+		$move = $this->old - ($this->restrict_move[count($this->restrict_move)-1]);
+		$valid = array_merge(array_diff($valid, array($move)));
+		
+		
 		for($i=0;$i<sizeof($valid);$i++)
 		{
 			if($this->pos == $valid[$i])
@@ -77,6 +82,16 @@ class game_logic
 			{
 				$validate = false;
 				echo "invalid move<br/>";
+			}
+		}
+		
+		//To check that move is not made into a previously held position while on move increment
+		for($i=0;$i<count($this->restrict_move);$i++)
+		{
+			if($this->new == $this->restrict_move[$i])
+			{
+				$validate = false;
+				echo "Can't move into a past slot";
 			}
 		}
 		return $validate;
@@ -102,6 +117,7 @@ class game_logic
 		$this->player = $this->s2[$this->new]+$this->s2[$this->old];
 	}
 
+	//used to print all the stats
 	function print_stats(){
 		echo "	new = $this->new <br/>
 				old = $this->old <br/>
