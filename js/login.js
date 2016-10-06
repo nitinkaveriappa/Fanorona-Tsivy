@@ -5,11 +5,11 @@ function errCheck()
 	unescape(url);
 	if(url.search('\\?type=err')>0)
 	{
-		document.getElementById('errmsg').removeAttribute('hidden');
+		document.getElementById('errmsg').innerHTML="INVALID USER NAME OR PASSWORD";
 	}
 	else
 	{
-		document.getElementById('errmsg').setAttribute('hidden','on');
+		document.getElementById('errmsg').innerHTML="";
 	}
 	
 }

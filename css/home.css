@@ -28,6 +28,12 @@
 	display:block;
 }
 
+.contents {
+	position:relative;
+	overflow:hidden;
+	padding-top:100px;
+}
+
 .heading {
 	font: Arial, Helvetica, sans-serif;
 	font-size: 36px;
@@ -54,16 +60,44 @@
 	font-style:oblique;
 }
 
+.button {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:24px;
+	color: #000;
+	background-color:#FF9;
+	border-radius:3px;
+	
+}
+.button:hover, .button:focus, .button:active {
+	background-color:#C60;	
+	color:#FFF;
+}
 
-.Logout {
+.statsTable { 
+	border-style:double;
+	border-color:#999;
+}
+
+.statsTable td{
+	border-bottom-style:solid;
+	border-right-style:solid;
+	border-color:#CCC;
+}
+
+.statsTable td {
+	font:Arial, Helvetica, sans-serif;
+	font-size:20px;
+	font-weight:500;
+	width:130px;
+	height:50px;
+}
+
+.Logout a {
 	color:#000;
+	text-decoration:none
 }
 
-.contents {
-	position:relative;
-	overflow:hidden;
-	padding-top:100px;
-}
+
 
 
 .show {

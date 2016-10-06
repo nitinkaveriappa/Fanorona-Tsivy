@@ -18,7 +18,7 @@ if($getPlayerQuery->rowCount() == 1)
 	$id = $result['player_id'];
 	$verifyPlayerQuery = $connection->query("UPDATE pl_mst SET player_verified=1 WHERE player_id=$id;");
 	$deleteVerifyQuery = $connection->query("DELETE FROM vr_ls WHERE player_id=$id;");
-	header("LOCATION:index.php");
+	header("LOCATION:index.html");
 }
 else
 {
