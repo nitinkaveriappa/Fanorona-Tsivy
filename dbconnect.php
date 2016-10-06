@@ -2,21 +2,21 @@
 
 function db_connect() {
 
-        // Define connection as a static variable, to avoid connecting more than once 
+        // Define connection as a static variable, to avoid connecting more than once
     static $connection;
 
         // Try and connect to the database, if a connection has not been established yet
     if(!isset($connection)) {
              // Load configuration as an array. Use the actual location of your configuration file
-        $config = parse_ini_file('config.ini'); 
+        $config = parse_ini_file('config.php');
 		$servername = $config['servername'];
 		$dbname = $config['dbname'];
-		
+
 		try {
 			$connection = new PDO("mysql:host=$servername;dbname=$dbname", $config['username'], $config['password']);
 			// set the PDO error mode to exception
 			$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			echo "Connected successfully<br/>"; 
+			echo "Connected successfully<br/>";
 			$setDBQuery = $connection->prepare("USE fanodb;");
 			$setDBQuery->execute();
 		}
