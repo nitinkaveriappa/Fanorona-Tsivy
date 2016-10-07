@@ -14,8 +14,8 @@
 </style>
 <script>
 window.onload = function(){
-	
-	
+
+
 };
 </script>
 <script src="js/register.js" type="text/javascript"></script>
@@ -29,7 +29,7 @@ window.onload = function(){
 <div class="header" >
 	<div class="Title" align="center">
 		<span class="MainTitle">FANORONA</span><br />
-   		<span class="SubTitle">SWE 681 Project</span>	
+   		<span class="SubTitle">SWE 681 Project</span>
     </div>
 	<div class="Logout" align="right" >
     	<a href="logout.php" style="vertical-align:middle;">Logout</a></div>
@@ -39,10 +39,10 @@ window.onload = function(){
 <div class="contents" align="center">
 	<div class="contentData">
     	<span class="heading">REGISTER</span>
-    
+
     <div class="registerForm">
 	<form action="createPlayer.php" method="post" onsubmit="return validate();" >
-   		<input class="formDetail" type="text" name = "rMemName"  placeholder="Member Name" size="30px" maxlength="35" pattern="^[a-zA-Z0-9.\']+" required><br/><br/>
+   		<input class="formDetail" type="text" name = "rMemName"  placeholder="Member Name" size="30px" maxlength="35" pattern="^[a-zA-Z0-9.']+$" required><br/><br/>
     	<input class="formDetail" type="text" name = "rMemEmail"  placeholder="Email" size="30px" onchange="EmailChecking(this.value);" maxlength="50" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,4}"><br/>
         <span id="EmailExist" style="color:#F00;"></span><br/>
 		<input class="formDetail" type="password" name = "rMemPassword" placeholder="Password" size="30px" maxlength="30" pattern="^[a-zA-Z0-9._%+!$@]+$" required><br/><br/>
@@ -50,9 +50,9 @@ window.onload = function(){
         <button class="formBttn" type="submit" name="registerBttn" >Register</button><br/><br/>
     </form>
     </div>
-       
+
 	</div>
-    
+
 </div>
 
 </body>
