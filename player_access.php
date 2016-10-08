@@ -33,6 +33,17 @@ class access
 				$_SESSION['player_id'] =$loginResultRow['player_id'];
 				$_SESSION['player_name'] =$loginResultRow['player_name'];
 				
+				//Sets the flags
+				$setFlagQuery= $connection->prepare("INSERT INTO flg_ls(player_id,login_flag,lobby_flag,ingame_flag) VALUES(:playerId,:loginFlag,:lobbyFlag,:ingameFlag);");
+				$setFlagQuery->bindParam(':playerId',$loginResultRow['player_id']);
+				$loginFlag = 1;
+				$lobbyFlag= 0;
+				$ingameFlag =0;
+				$setFlagQuery->bindParam(':loginFlag',$loginFlag);
+				$setFlagQuery->bindParam(':lobbyFlag',$lobbyFlag);
+				$setFlagQuery->bindParam(':ingameFlag',$ingameFlag);
+				$setFlagQuery->execute();
+				
 				header("Location:home.php");
 			}
 			else
