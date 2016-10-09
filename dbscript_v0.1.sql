@@ -46,7 +46,7 @@ CREATE TABLE GM_ST(game_id INT NOT NULL,
 					player_id INT NOT NULL,
                     move INT NOT NULL,
                     FOREIGN KEY (game_id) REFERENCES GM_MST(game_id) ON DELETE CASCADE,
-                    FOREIGN KEY (player_id) REFERENCES GM_MST(player_id1, player_id2) ON DELETE CASCADE);
+                    FOREIGN KEY (player_id) REFERENCES GM_MST(player_id_1, player_id_2) ON DELETE CASCADE);
                     
 -- Creating the verify list table --
 CREATE TABLE VR_LS(player_id INT NOT NULL,
