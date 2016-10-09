@@ -1,5 +1,5 @@
-CREATE SCHEMA fanodb;
-USE fanodb;
+CREATE SCHEMA fan1db;
+USE fan1db;
 -- Creating the Player Master table -- 
 CREATE TABLE PL_MST(player_id INT NOT NULL,
 					player_name VARCHAR(30) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE GM_ST(game_id INT NOT NULL,
 					player_id INT NOT NULL,
                     move INT NOT NULL,
                     FOREIGN KEY (game_id) REFERENCES GM_MST(game_id) ON DELETE CASCADE,
-                    FOREIGN KEY (player_id) REFERENCES GM_MST(player_id_1, player_id_2) ON DELETE CASCADE);
+                    FOREIGN KEY (player_id) REFERENCES PL_MST(player_id) ON DELETE CASCADE);
                     
 -- Creating the verify list table --
 CREATE TABLE VR_LS(player_id INT NOT NULL,
