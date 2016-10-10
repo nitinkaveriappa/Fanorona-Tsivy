@@ -3,7 +3,7 @@
 [database]
 servername = localhost
 username = root
-password = shoe
+password = Chinni@1713
 dbname = fanodb
 
 [captcha]
