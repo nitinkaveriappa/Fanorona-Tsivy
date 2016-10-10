@@ -1,6 +1,10 @@
 CREATE SCHEMA fanodb;
 USE fanodb;
+<<<<<<< HEAD
 -- Creating the Player Master table --
+=======
+-- Creating the Player Master table -- 
+>>>>>>> origin/master
 CREATE TABLE PL_MST(player_id INT NOT NULL,
 					player_name VARCHAR(30) NOT NULL,
                     player_email VARCHAR(25) NOT NULL,
