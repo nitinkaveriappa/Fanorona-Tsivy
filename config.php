@@ -4,7 +4,7 @@
 servername = localhost
 username = root
 password = shoe
-dbname = fanodb2
+dbname = fanodb
 
 [captcha]
 secret = 6LdahgcUAAAAAOd6zMYFIhe7KLFIN_m-yva7iWt7
