@@ -1,5 +1,5 @@
-CREATE SCHEMA fan1db;
-USE fan1db;
+CREATE SCHEMA fanodb;
+USE fanodb;
 -- Creating the Player Master table -- 
 CREATE TABLE PL_MST(player_id INT NOT NULL,
 					player_name VARCHAR(30) NOT NULL,
