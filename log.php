@@ -29,8 +29,7 @@ function log_it($message)
   $logdata = fputcsv($writelog, array($date, $remote_addr, $request_uri, $message));
   fclose($writelog);
 }
-
-//to Test if log.php is working or not
-//$test = log_it("test logger");
+//Test if log.php is working or not
+$test = log_it("test logger");
 
 ?>

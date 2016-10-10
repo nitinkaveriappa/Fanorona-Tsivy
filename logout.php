@@ -1,6 +1,12 @@
 <?php
    session_start();
-  	 	
+  require_once('dbconnect.php');
+  $playerId = $_SESSION['player_id'];
+  	//Unset all the flags
+	$unsetFlagsQuery = $connection->prepare("UPDATE flg_ls SET login_flag=0, lobby_flag=0, ingame_flag=0 WHERE player_id=:playerId ;");
+	$unsetFlagsQuery->bindParam(':playerId',$playerId);
+	$unsetFlagsQuery->execute();
+	
 	// Unset all of the session variables
 	$_SESSION = array();
 

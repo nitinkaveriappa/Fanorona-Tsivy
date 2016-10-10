@@ -1,15 +1,11 @@
-<!-- Home Page -->
+<!-- Game Page -->
 <html>
 <head>
 <?php 
 session_start();
 $name = $_SESSION['player_name'];
 $idle = time() - $_SESSION['created'];
-if ($idle > 3000)
-{
-	header('Location:logout.php');
-}
-else if($idle > 120)
+if($idle > 120)
 {
     session_regenerate_id(true);
     $_SESSION['created'] = time();
@@ -18,7 +14,7 @@ else if($idle > 120)
 ?>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Fanorona|Home</title>
+<title>Fanorona| Game</title>
 <link href="css/home.css" rel="stylesheet" type="text/css">
 
 <script src="js/home.js" type="text/javascript"></script>
@@ -46,17 +42,7 @@ window.onload = getStats();
 	
     <div class="contentData">
 	
-    	<button class="button" id="newGameBttn" onClick="newGame()">NEW GAME</button>
-     	<button class="button" id="joinGameBttn" onClick="joinGame()">JOIN GAME</button><br/>
-        <span id='gameStatus'></span>
-    	<br/><br/>
-        <table class="statsTable" cellspacing="0px" align="center">
-        	<tr><td><b>Player Name</b></td><td align="center" id="playerName"></td></tr>
-        	<tr><td><b>Games Played</b></td><td align="center" id="gamesCOunt"></td></tr>
-       		<tr><td><b>Games Won</b></td><td align="center" id="winCount"></td></tr>
-        	<tr><td><b>Games Drawn</b></td><td align="center" id="drawCOunt"></td></tr>
-        	<tr><td><b>Games Loss</b></td><td align="center" id="lossCOunt"></td></tr>
-        </table>
+    	<h1>Hi</h1>
     </div>  
 </div>
 

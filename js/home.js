@@ -21,3 +21,55 @@ function getStats()
 	AjaxReq.open("POST","player_stats.php",true);
 	AjaxReq.send();
 }
+
+
+function newGame()
+{
+	document.getElementById('gameStatus').innerHTML = "Starting New Game. Looking for opponent...";
+	
+	var AjaxReq = new XMLHttpRequest();
+	AjaxReq.onreadystatechange = function()
+	{
+		if(AjaxReq.readyState==4)
+		{
+			var res = AjaxReq.responseText;
+			
+			if(res!="")
+			{
+				window.location.href = "game.php?game="+res;
+			}
+			else
+			{
+				document.getElementById('gameStatus').innerHTML = "No opponents found. Try again";
+			}
+		}
+	}
+	AjaxReq.open("POST","setup_game.php",true);
+	AjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	AjaxReq.send("type=newGame");
+}
+
+function joinGame()
+{
+	document.getElementById('gameStatus').innerHTML = "Finding New Game. Looking for opponent...";
+	
+	var AjaxReq = new XMLHttpRequest();
+	AjaxReq.onreadystatechange = function()
+	{
+		if(AjaxReq.readyState==4)
+		{
+			var res = AjaxReq.responseText;
+			if(res!="")
+			{
+				window.location.href = "game.php?game="+res;
+			}
+			else
+			{
+				document.getElementById('gameStatus').innerHTML = "No opponents found. Try again";
+			}
+		}
+	}
+	AjaxReq.open("POST","setup_game.php",true);
+	AjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	AjaxReq.send("type=joinGame");
+}
