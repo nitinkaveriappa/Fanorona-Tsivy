@@ -8,7 +8,7 @@ class access
 	{
 		include('dbconnect.php');
 		
-		$loginQuery = $connection->prepare("SELECT * FROM pl_mst WHERE player_email=:mailID");
+		$loginQuery = $connection->prepare("SELECT a.* ,b.login_flag FROM pl_mst a, flg_ls b WHERE player_email=:mailID and b.player_id = a.player_id ;");
 		$loginQuery->bindParam(':mailID',$userName);
 		$loginQuery->execute();
 		$loginResultCount = $loginQuery->rowCount();
@@ -20,9 +20,10 @@ class access
 			$loginResultRow = $loginQuery->fetch(PDO::FETCH_ASSOC);
 			$cryptedPassword = $loginResultRow['player_password'];
 			$verifiedFlag = $loginResultRow['player_verified'];
+			$loginFlag = $loginResultRow['login_flag'];
 			
 			//If password matches and user is verified
-			if(password_verify($userPassword, $cryptedPassword) && $verifiedFlag == 1)
+			if(password_verify($userPassword, $cryptedPassword) && $verifiedFlag == 1 && $loginFlag == 0)
 			{
 				//Creates a session and sets session variables
 				session_start();
