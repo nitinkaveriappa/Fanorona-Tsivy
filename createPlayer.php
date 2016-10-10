@@ -3,7 +3,7 @@
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	//Verifies Name is in valid format
-	if(isset($_POST['rMemName']) && preg_match("/^[a-zA-Z0-9.']+/",$_POST['rMemName'])  && strlen($_POST['rMemName']) < 35)
+	if(isset($_POST['rMemName']) && preg_match("/^[a-zA-Z0-9.' ]+/",$_POST['rMemName'])  && strlen($_POST['rMemName']) < 35)
 	{
 		$playerName = $_POST['rMemName'];
 	}
@@ -21,7 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		header("Location:index.html?type=err");
 	}
 	//Verifies Password is in valid format
-	if(isset($_POST['rMemPassword']) && preg_match('/^[a-zA-Z0-9._%+!$@]+/',$_POST['rMemPassword']) && strlen($_POST['rMemPassword']) < 30)
+	if(isset($_POST['rMemPassword']) && preg_match('/^[a-zA-Z0-9._%+!$@ ]+/',$_POST['rMemPassword']) && strlen($_POST['rMemPassword']) < 30)
 	{
 		$playerPassword = $_POST['rMemPassword'];
 	}

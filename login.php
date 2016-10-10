@@ -1,6 +1,4 @@
 <?php
-require_once("dbconnect.php");
-
 
 //Verifies the login credentials, directs to home page or login page 
 if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -15,7 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		header("Location:index.html?type=err");
 	}
 	//Verifies Password is in valid format
-	if(isset($_POST['userPassword']) && preg_match("/^[a-zA-Z0-9._%+!$@]+/",$_POST['userPassword']) && strlen($_POST['userPassword']) < 30)
+	if(isset($_POST['userPassword']) && preg_match("/^[a-zA-Z0-9._%+!$@ ]+/",$_POST['userPassword']) && strlen($_POST['userPassword']) < 30)
 	{ 
 		$userPassword = $_POST['userPassword'];	
 	}
