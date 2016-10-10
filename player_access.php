@@ -35,14 +35,8 @@ class access
 				$_SESSION['player_name'] =$loginResultRow['player_name'];
 				
 				//Sets the flags
-				$setFlagQuery= $connection->prepare("INSERT INTO flg_ls(player_id,login_flag,lobby_flag,ingame_flag) VALUES(:playerId,:loginFlag,:lobbyFlag,:ingameFlag);");
+				$setFlagQuery= $connection->prepare("UPDATE flg_ls SET login_flag=1 WHERE player_id=:playerId;");
 				$setFlagQuery->bindParam(':playerId',$loginResultRow['player_id']);
-				$loginFlag = 1;
-				$lobbyFlag= 0;
-				$ingameFlag =0;
-				$setFlagQuery->bindParam(':loginFlag',$loginFlag);
-				$setFlagQuery->bindParam(':lobbyFlag',$lobbyFlag);
-				$setFlagQuery->bindParam(':ingameFlag',$ingameFlag);
 				$setFlagQuery->execute();
 				
 				header("Location:home.php");
@@ -105,6 +99,16 @@ class access
 		$addPlayerStatsQuery->bindParam(':lossCount',$lc);
 		$addPlayerStatsQuery->execute();
 			
+		//Sets the flags
+		$setFlagQuery= $connection->prepare("INSERT INTO flg_ls(player_id,login_flag,lobby_flag,ingame_flag) VALUES(:playerId,:loginFlag,:lobbyFlag,:ingameFlag);");
+		$setFlagQuery->bindParam(':playerId',$playerId);
+		$loginFlag = 0;
+		$lobbyFlag= 0;
+		$ingameFlag =0;
+		$setFlagQuery->bindParam(':loginFlag',$loginFlag);
+		$setFlagQuery->bindParam(':lobbyFlag',$lobbyFlag);
+		$setFlagQuery->bindParam(':ingameFlag',$ingameFlag);
+		$setFlagQuery->execute();	
 		
 		//Add verification code with player id into fanodb
 		$addVerifyQuery = $connection->prepare("INSERT INTO vr_ls(player_id,verify_code) VALUES (:playerId,:code);");
