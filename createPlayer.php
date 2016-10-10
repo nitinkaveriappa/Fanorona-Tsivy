@@ -1,6 +1,4 @@
 <?php
-session_start();
-require_once('dbconnect.php');
 //Registers a new player into the player master table.
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
