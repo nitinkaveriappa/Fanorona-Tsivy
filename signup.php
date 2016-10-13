@@ -51,6 +51,7 @@ window.onload = function(){
 			<div class="g-recaptcha" data-sitekey="6LdahgcUAAAAAAm5QqZCBVaaIvZIhL5ehTSPXsd2"></div><br/>
         <button class="formBttn" type="submit" name="registerBttn" >Register</button><br/><br/>
     </form>
+		<div class="formOptions">Registered Already? <a href="index.html">Login Now!</a></div>
     </div>
 
 	</div>
