@@ -4,7 +4,7 @@
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	//Verifies Username(email id) is in valid format
-	if(isset($_POST['userName']) && preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,4}/',$_POST['userName'])  && strlen($_POST['userName']) < 50)
+	if(isset($_POST['userName']) && preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,4}$/',$_POST['userName'])  && strlen($_POST['userName']) < 50)
 	{	 
 		$userName = $_POST['userName'];		
 	}
@@ -13,7 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		header("Location:index.html?type=err");
 	}
 	//Verifies Password is in valid format
-	if(isset($_POST['userPassword']) && preg_match("/^[a-zA-Z0-9._%+!$@ ]+/",$_POST['userPassword']) && strlen($_POST['userPassword']) < 30)
+	if(isset($_POST['userPassword']) && preg_match("/^[a-zA-Z0-9._%+!$@ ]+$/",$_POST['userPassword']) && strlen($_POST['userPassword']) < 30)
 	{ 
 		$userPassword = $_POST['userPassword'];	
 	}

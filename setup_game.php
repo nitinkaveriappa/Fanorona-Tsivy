@@ -76,14 +76,25 @@ class setup
 			//If opponent has joined return the Game ID
 			if($checkOpponentQuery->rowCount() == 1)
 			{
-				$checkOpponentResult = $checkOpponentQuery->fetch(PDO::FETCH_ASSOC);
-				$gameId = $checkOpponentResult['game_id'];
 				//Set InGame Flag as 1 
 				$setInGameFlagQuery = $connection->prepare("UPDATE flg_ls SET ingame_flag=1 WHERE player_id=:playerId ;");
 				$setInGameFlagQuery->bindParam(':playerId',$playerId);
 				$setInGameFlagQuery->execute();
 				$setInGameFlagQuery = null;
-				echo "$gameId";
+				//Sets the game id as session variable
+				$_SESSION['game_id'] = $gameId;
+				
+				//Creates the node list with initial state
+				$setInitialNodeState = $connection->prepare("INSERT INTO gm_st(game_id,player_id,move_count,node_list) VALUE(:gameId,:playerId,:moveCount,:nodeList)");
+				$moveCount = 0;
+				$nodeList = '111111111111111111121201212222222222222222222';
+				$setInitialNodeState->bindParam(':gameId',$gameId);
+				$setInitialNodeState->bindParam(':playerId',$player1);
+				$setInitialNodeState->bindParam(':moveCount',$moveCount);
+				$setInitialNodeState->bindParam(':nodeList',$nodeList);
+				$setInitialNodeState->execute();
+				
+				echo "Connected";
 				break;
 			}
 			
@@ -135,7 +146,11 @@ class setup
 			$setInGameFlagQuery = $connection->prepare("UPDATE flg_ls SET ingame_flag=1 WHERE player_id=:playerId ;");
 			$setInGameFlagQuery->bindParam(':playerId',$player_id_2);
 			$setInGameFlagQuery->execute();
-			echo "$gameId";
+			
+			//Sets the game id as session variable
+			$_SESSION['game_id'] = $gameId;
+			
+			echo "Connected";
 		}
 		else
 		{
