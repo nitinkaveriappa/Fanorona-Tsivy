@@ -48,7 +48,7 @@ window.onload = function(){
         <span id="EmailExist" style="color:#F00;"></span><br/>
 		<input class="formDetail" type="password" name = "rMemPassword" placeholder="Password" size="30px" maxlength="30" pattern="^[a-zA-Z0-9._%+!$@ ]+$" required><br/><br/>
     	<input class="formDetail" type="password" name = "rMemPasswordVerify" placeholder="Retype Password" size="30px" required ><br/><br/>
-			<div class="g-recaptcha" data-sitekey="6LdahgcUAAAAAAm5QqZCBVaaIvZIhL5ehTSPXsd2"></div><br/>
+			<div class="g-recaptcha" data-sitekey="6Lf0oAgUAAAAAC7SmTTJyGxWqDFra33JU5HgbCNB"></div><br/>
         <button class="formBttn" type="submit" name="registerBttn" >Register</button><br/><br/>
     </form>
 		<div class="formOptions">Registered Already? <a href="index.html">Login Now!</a></div>

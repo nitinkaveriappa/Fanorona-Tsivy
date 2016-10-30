@@ -42,7 +42,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
 
 	//Validates the captcha value from google server
-	$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdahgcUAAAAAOd6zMYFIhe7KLFIN_m-yva7iWt7&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+	$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6Lf0oAgUAAAAAD6f9YelgkesEGy7hI_N4i4f7CVX&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
 	$data = json_decode($response);
 
 
