@@ -4,7 +4,7 @@ include 'game_logicv0.4.php';
 session_start();
 $name = $_SESSION['player_name'];
 $idle = time() - $_SESSION['created'];
-if ($idle > 3000)
+if ($idle > 300)
 {
 	header('Location:logout.php');
 }
@@ -65,8 +65,9 @@ function send_state()
 	$move_count=$result['move_count'];
 	$restricted_moves=$result['restricted_moves'];
 	$turn=$result['player_id'];
-
-	$query2 = "SELECT player_id_1, player_id_2 FROM fanodb.gm_mst WHERE game_id:gameID;"
+	
+	//Get both player id in the game
+	$query2 = "SELECT player_id_1, player_id_2 FROM fanodb.gm_mst WHERE game_id:gameID;";
 	$dataQuery2 = $connection->prepare($query2);
 	$dataQuery2->bindParam(':gameID',$game_id);
 	$dataQuery2->execute();
@@ -74,17 +75,20 @@ function send_state()
 
 	$player_id_1=$result2['player_id_1'];
 	$player_id_2=$result2['player_id_2'];
-
+ //Check if the next turn is of current player
  if($player_id==$turn)
  {
+	//Check if the current player is player 1 then return 1 
 	if($player_id_1==$player_id)
 	{
-		$playa=1;
+		$playa=1;					
 	}
+	//Check if the current player is player 2 then return 2
 	else if($player_id_2==$player_id) {
 		$playa=2;
 	}
-}
+ }
+ //If it is not current player's turn then return 0
 else {
 		$playa=0;
 	}
