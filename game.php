@@ -1,10 +1,10 @@
 <html>
 <head>
-<?php 
+<?php
 session_start();
 $name = $_SESSION['player_name'];
 $idle = time() - $_SESSION['created'];
-if ($idle > 3000)
+if ($idle > 300)
 {
 	header('Location:logout.php');
 }
@@ -33,17 +33,17 @@ else if($idle > 120)
 <div class="header" align="center">
 	<div class="Title" align="center">
       	<span class="MainTitle">FANORONA</span><br />
-    	<span class="SubTitle">SWE 681 Project</span>	
+    	<span class="SubTitle">SWE 681 Project</span>
         <span class="Logout" style="float:right"><a href="logout.php">logout</a></span>
     </div>
 </div>
 <span id="welcometxt"><b>Welcome </b></span>
 <div class="contents" align="center">
-	
+
     <div class="contentData">
 		<div id='gameBoard'>
-        <!-- <img src="Images/layout.jpg" width="1040px" height="600px"/> --> 
-    	<table id='pawnTable' cellspacing="50px" > 
+        <!-- <img src="Images/layout.jpg" width="1040px" height="600px"/> -->
+    	<table id='pawnTable' cellspacing="50px" >
         	<tr>
             	<td class='pawn' id='A1'></td>
                 <td class='pawn' id='A2'></td>
@@ -101,7 +101,7 @@ else if($idle > 120)
             </tr>
          </table>
          </div>
-    </div>  
+    </div>
 </div>
 
 </div>
