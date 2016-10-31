@@ -34,9 +34,9 @@ function newGame()
 		{
 			var res = AjaxReq.responseText;
 			
-			if(res!="")
+			if(res=="Connected")
 			{
-				window.location.href = "game.php?game="+res;
+				window.location.href = "game.php";
 			}
 			else
 			{
@@ -59,9 +59,9 @@ function joinGame()
 		if(AjaxReq.readyState==4)
 		{
 			var res = AjaxReq.responseText;
-			if(res!="")
+			if(res=="Connected")
 			{
-				window.location.href = "game.php?game="+res;
+				window.location.href = "game.php";
 			}
 			else
 			{
