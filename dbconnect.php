@@ -1,7 +1,5 @@
 <?php
-
 function db_connect() {
-
         // Define connection as a static variable, to avoid connecting more than once
     static $connection;
 
@@ -23,7 +21,8 @@ function db_connect() {
 		catch(PDOException $e)
 		{
 			 // Handle error - notify administrator, log to a file, show an error screen, etc.
-			echo "Connection failed: " . $e->getMessage();
+       //log_it("Database connection unsuccessful:".$e->getMessage());
+       header('Location:errorpage.html');
 		}
     }
     return $connection;

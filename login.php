@@ -1,5 +1,4 @@
 <?php
-
 //Verifies the login credentials, directs to home page or login page
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -38,8 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	//Validates the captcha value from google server
 	$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
 	$data = json_decode($response);
-
-
+	
 	//If its a bot it redirects to index
 	if($data->success==false)
      {

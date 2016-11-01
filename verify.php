@@ -1,9 +1,10 @@
-<?php 
+<?php
+require_once('log.php');
 require_once('dbconnect.php');
 //Get code from URL
 if(isset($_REQUEST['code']) && $_REQUEST['code'])
 {
-	$code = $_REQUEST['code'];	
+	$code = $_REQUEST['code'];
 }
 
 //Get player ID for the code from database
@@ -18,6 +19,8 @@ if($getPlayerQuery->rowCount() == 1)
 	$id = $result['player_id'];
 	$verifyPlayerQuery = $connection->query("UPDATE pl_mst SET player_verified=1 WHERE player_id=$id;");
 	$deleteVerifyQuery = $connection->query("DELETE FROM vr_ls WHERE player_id=$id;");
+
+	log_it("$id verification successful");
 	header("LOCATION:index.html");
 }
 else

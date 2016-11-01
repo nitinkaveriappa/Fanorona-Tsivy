@@ -6,9 +6,11 @@ class access
 
 	function login_player($userName,$userPassword)
 	{
+		include('log.php');
 		include('dbconnect.php');
 
 		$loginQuery = $connection->prepare("SELECT a.* ,b.login_flag FROM pl_mst a, flg_ls b WHERE player_email=:mailID and b.player_id = a.player_id ;");
+		log_it("Database connection login check successful");
 		$loginQuery->bindParam(':mailID',$userName);
 		$loginQuery->execute();
 		$loginResultCount = $loginQuery->rowCount();
@@ -39,6 +41,7 @@ class access
 				$setFlagQuery->bindParam(':playerId',$loginResultRow['player_id']);
 				$setFlagQuery->execute();
 
+				log_it("$userName user login successful");
 				header("Location:home.php");
 			}
 			//if user needs to reconnect after abrupt disconnection from the game
@@ -57,15 +60,18 @@ class access
 					$idle = time() - $_SESSION['created'];
 					if ($idle > 300)
 					{
+						log_it("$userName user logged out forcefully (Session Timout)");
 						header('Location:logout.php');
 					}
 
 					if($idle < 300 && $_SESSION['game_id'] == $game_id && $_SESSION['player_id'] == $loginResultRow['player_id'])
 					{
+						log_it("$userName user re-join game successful");
 						header("Location:game.php");
 					}
 					else if($idle < 300 && $_SESSION['player_id'] == $loginResultRow['player_id'])
 					{
+						log_it("$userName user re-login successful");
 						header("Location:home.php");
 					}
 				}
@@ -84,6 +90,7 @@ class access
 
 	function register_player($playerName, $playerEmail, $playerPassword)
 	{
+		include('log.php');
 		include('dbconnect.php');
 		//Finds the latest player ID and increments it
 		$getRowQuery = $connection->prepare("SELECT player_id FROM pl_mst ORDER BY player_id DESC LIMIT 1;");
@@ -148,6 +155,7 @@ class access
 		//Sends the verification url to member
 		$this->sendVerification($playerEmail,$code);
 
+		log_it("$playerEmail registration successful, pending verification");
 		header('Location:index.html');
 	}
 

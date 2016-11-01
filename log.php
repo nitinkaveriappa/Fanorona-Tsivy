@@ -30,6 +30,7 @@ function log_it($message)
   fclose($writelog);
 }
 //Test if log.php is working or not
-$test = log_it("test logger");
-
+//$test = log_it("test logger");
+//output format
+//"2016-10-31 23:16:09",::1,/log.php,"test logger"
 ?>
