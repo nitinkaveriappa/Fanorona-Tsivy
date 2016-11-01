@@ -51,6 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	//If its a bot it redirects to index
 	if($data->success==false)
 		 {
+			header("Location:index.html?type=err");
 			}
 	//If not a bot 	then tries to register the player
 	else
