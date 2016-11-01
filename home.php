@@ -1,11 +1,11 @@
 <!-- Home Page -->
 <html>
 <head>
-<?php 
+<?php
 session_start();
 $name = $_SESSION['player_name'];
 $idle = time() - $_SESSION['created'];
-if ($idle > 3000)
+if ($idle > 300)
 {
 	header('Location:logout.php');
 }
@@ -37,15 +37,15 @@ window.onload = getStats();
 <div class="header" align="center">
 	<div class="Title" align="center">
       	<span class="MainTitle">FANORONA</span><br />
-    	<span class="SubTitle">SWE 681 Project</span>	
+    	<span class="SubTitle">SWE 681 Project</span>
         <span class="Logout" style="float:right"><a href="logout.php">logout</a></span>
     </div>
 </div>
 <span id="welcometxt"><b>Welcome </b></span>
 <div class="contents" align="center">
-	
+
     <div class="contentData">
-	
+
     	<button class="button" id="newGameBttn" onClick="newGame()">NEW GAME</button>
      	<button class="button" id="joinGameBttn" onClick="joinGame()">JOIN GAME</button><br/>
         <span id='gameStatus'></span>
@@ -57,7 +57,7 @@ window.onload = getStats();
         	<tr><td><b>Games Drawn</b></td><td align="center" id="drawCOunt"></td></tr>
         	<tr><td><b>Games Loss</b></td><td align="center" id="lossCOunt"></td></tr>
         </table>
-    </div>  
+    </div>
 </div>
 
 </div>

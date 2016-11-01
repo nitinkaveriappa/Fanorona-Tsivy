@@ -40,17 +40,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		header("Location:index.html?type=err");
 	}
 
+	//get captcha secret
+		$config = parse_ini_file('config.php');
+		$secret = $config['secret'];
 
 	//Validates the captcha value from google server
-	$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6Lf0oAgUAAAAAD6f9YelgkesEGy7hI_N4i4f7CVX&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+	$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
 	$data = json_decode($response);
-
 
 	//If its a bot it redirects to index
 	if($data->success==false)
 		 {
-			 header("Location:index.html?type=err");
-		 }
+			}
 	//If not a bot 	then tries to register the player
 	else
 	{

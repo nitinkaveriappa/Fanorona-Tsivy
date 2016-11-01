@@ -154,9 +154,13 @@ class access
 
 	function sendVerification($email, $code)
 	{
-		$headers='From: paurav66@yahoo.com'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
+		//get verifylink
+			$config = parse_ini_file('config.php');
+			$verifylink = $config['verifylink'];
+
+		$headers='From: nitinkaveriappa@yahoo.in'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
 		$subject = 'Fanorona Account Verification';
-		$link = "http://localhost/verify.php?code=$code";
+		$link = "$verifylink$code";
 		$content = "Please copy the link on your browser: $link";
 		mail($email,$subject,$content,$headers );
 	}
