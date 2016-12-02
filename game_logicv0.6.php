@@ -127,7 +127,7 @@ class game_logic
 		$player_change = true;
 		if($this->check_validmove())
 		{
-		$level = (Int)$this->old/9;
+		$level = (int)$this->old/9;
 
 
 			for($i = $this->new + $this->pos;$i>=0&&$i<45;)
