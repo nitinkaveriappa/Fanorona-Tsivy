@@ -16,5 +16,30 @@
 	border-style: solid;
 	border-width: 0px;
 	border-radius: 50px;
+	background-color: #FFF;
+}
+
+.player1 {
+	background-color:#F33;
+}
+
+.player2 {
+	background-color:#00F;
+}
+
+.empty {
+	background-color: #DDD;
+}
+	
+.selected {
 	background-color: #FF0;
+}
+
+.available {
+	background-color:#6C9;
+	
+}
+
+.restricted{
+	background-color:#333;
 }
