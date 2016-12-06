@@ -46,8 +46,8 @@ window.onload = function(){
    		<input class="formDetail" type="text" name = "rMemName"  placeholder="Member Name" size="30px" maxlength="35" pattern="^[a-zA-Z0-9.' ]+$" required><br/><br/>
     	<input class="formDetail" type="text" name = "rMemEmail"  placeholder="Email" size="30px" onchange="EmailChecking(this.value);" maxlength="50" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,4}"><br/>
         <span id="EmailExist" style="color:#F00;"></span><br/>
-		<input class="formDetail" type="password" name = "rMemPassword" placeholder="Password" size="30px" maxlength="30" pattern="^[a-zA-Z0-9._%+!$@ ]+$" required><br/><br/>
-    	<input class="formDetail" type="password" name = "rMemPasswordVerify" placeholder="Retype Password" size="30px" required ><br/><br/>
+		<input class="formDetail" type="password" name = "rMemPassword" placeholder="Password" size="30px" maxlength="30" autocomplete="off" pattern="^[a-zA-Z0-9._%+!$@ ]+$" required><br/><br/>
+    	<input class="formDetail" type="password" name = "rMemPasswordVerify" placeholder="Retype Password" autocomplete="off" size="30px" required ><br/><br/>
 			<div class="g-recaptcha" data-sitekey="6Lf0oAgUAAAAAC7SmTTJyGxWqDFra33JU5HgbCNB"></div><br/>
         <button class="formBttn" type="submit" name="registerBttn" >Register</button><br/><br/>
     </form>
