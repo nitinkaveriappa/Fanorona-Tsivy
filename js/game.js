@@ -215,7 +215,6 @@ function sendGameState()
 									
 	var data = "type=play&nodeList="+currentNodeList;
 	var url = "play_game.php" ; 
-	alert("Sending:"+currentNodeList);
 	$.ajax({
 			url: url,
 			data: data,
