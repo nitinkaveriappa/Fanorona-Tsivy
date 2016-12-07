@@ -11,16 +11,17 @@ class game_logic
 	var $old;
 	var $player;
 	var $turn;
-
+	var $x;
+		
 	//Set variables
 	function __construct($node1, $node2, $move_count, $restrict_moves){
 		$this->s1 = $node1;
 		$this->s2 = $node2;
 		$this->move_num = $move_count;
 		$this->restrict_move = explode(",",$restrict_moves);
-
+		
 		$this->curr = $this->s2;
-
+		
 		$this->pos=0;
 		$this->new=0;
 		$this->old=0;
@@ -36,9 +37,9 @@ class game_logic
 		$flag=1;
 		for($i=0;$i<45;$i++)
 		{
-			if($this->s2[$i]!=0)
+			if($this->curr[$i]!=0)
 			{
-				if($this->s2[$i]!=$this->player)
+				if($this->curr[$i]!=$this->player)
 				{
 					$flag=0;
 				}
@@ -46,31 +47,31 @@ class game_logic
 		}
 		return $flag;
 	}
-
+	
 	//To validate if legal move
 	function check_validmove()
 	{
 		$validate = false;
-
+		
 		if(($this->old % 2) == 0)
 		{
 			$valid = array("-10", "-9", "-8", "-1", "1", "8", "9", "10");
 		}
-		else
+		else 
 		{
-			$valid = array("-9", "-1", "1", "9");
+			$valid = array("-9", "-1", "1", "9"); 
 		}
-
+		
 		//Removes the previous move direction value to prevent move again in the same direction
 		$move = $this->old - ($this->restrict_move[count($this->restrict_move)-1]);
 		$valid = array_merge(array_diff($valid, array($move)));
-
-
+		
+		
 		for($i=0;$i<sizeof($valid);$i++)
 		{
 			if($this->pos == $valid[$i])
 			{
-				$validate = true;
+				$validate = true;					
 			}
 		}
 		// To validate if pawn has moved to a empty slot
@@ -85,21 +86,21 @@ class game_logic
 				$validate = false;				//echo "invalid move";
 			}
 		}
-
+		
 		//To check that move is not made into a previously held position while on move increment
 		for($i=0;$i<count($this->restrict_move);$i++)
 		{
 			if($this->new == $this->restrict_move[$i])
 			{
-				$validate = false;			//echo "Cant move to same spot";
+				$validate = false;		$this->x.="d";	//echo "Cant move to same spot";	
 			}
 		}
 		return $validate;
 	}
-
+	
 	// To read the change in the state
 	function check_change(){
-
+		
 		for($i=0;$i<45;$i++)
 		{
 			if($this->s1[$i] != $this->s2[$i])
@@ -118,23 +119,25 @@ class game_logic
 		$this->pos = $this->new - $this->old;
 		if($this->s2[$this->new]!=$this->s2[$this->old])
 		$this->player = $this->s2[$this->new]+$this->s2[$this->old];
-
+		
 	}
 
-
+				
 	function remove_pawn(){
 		//Removes the pawns related
 		$player_change = true;
+		
 		if($this->check_validmove())
 		{
-		$level = (int)$this->old/9;
-
-
-			for($i = $this->new + $this->pos;$i>=0&&$i<45;)
+		 $level = intval($this->new/9);	//Checks the row of the pawn 
+		
+		 for($i = $this->new + $this->pos; $i>=0 && $i<45;)
 			{
-				if($this->pos == 1 || $this->pos == -1)
+				
+				//Horizontal Moves - Deletes pawns in the same row
+				if($this->pos  == 1 || $this->pos == -1)
 				{
-					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && $i/9 == $level)
+					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && intval($i/9) == $level)
 					{
 						$this->curr[$i] = 0;
 						$i += $this->pos;
@@ -143,9 +146,11 @@ class game_logic
 					else
 						break;
 				}
+				//Forward Vertical and diagonal moves - Deletes pawns in next row
 				else if($this->pos == 8 || $this->pos == 9 || $this->pos == 10)
 				{
-					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && $i/9 == ++$level)
+					
+					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && intval($i/9) == ++$level)
 					{
 						$this->curr[$i] = 0;
 						$i += $this->pos;
@@ -153,11 +158,35 @@ class game_logic
 					}
 					else
 						break;
-
+				
 				}
+				//Reverse Vertical and Diagonal moves - Deletes pawns in previous row
 				else if($this->pos == -8 || $this->pos == -9 || $this->pos == -10)
 				{
-					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && $i/9 == --$level)
+					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && intval($i/9) == --$level)
+					{
+						$this->curr[$i] = 0;
+						$i += $this->pos;
+						$player_change = false;				//If pawns are removed then same player plays next turn
+					    }
+					else
+						break;
+				
+				}
+				
+			}
+			//If no pawns to delete ahead then checks in the reverse direction 
+		if($player_change)
+		{
+		  $this->pos *= -1;
+		  $level = intval($this->old/9);	//Checks the row of the pawn 
+		
+		 for($i = $this->old + $this->pos; $i>=0 && $i<45;)
+			{
+				//Horizontal Moves - Deletes pawns in the same row
+				if($this->pos == 1 || $this->pos == -1)
+				{
+					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && intval($i/9) == $level)
 					{
 						$this->curr[$i] = 0;
 						$i += $this->pos;
@@ -165,58 +194,38 @@ class game_logic
 					}
 					else
 						break;
-
+				}
+				//Forward Vertical and diagonal moves - Deletes pawns in next row
+				else if($this->pos == 8 || $this->pos == 9 || $this->pos == 10)
+				{
+					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && intval($i/9) == ++$level)
+					{
+						$this->curr[$i] = 0;
+						$i += $this->pos;
+						$player_change = false;				//If pawns are removed then same player plays next turn
+					}
+					else
+						break;
+				
+				}
+				//Reverse Vertical and Diagonal moves - Deletes pawns in previous row
+				else if($this->pos == -8 || $this->pos == -9 || $this->pos == -10)
+				{
+					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && intval($i/9) == --$level)
+					{
+						$this->curr[$i] = 0;
+						$i += $this->pos;
+						$player_change = false;				//If pawns are removed then same player plays next turn
+					}
+					else
+				      	break;
 				}
 			}
-
-			if($player_change)
-			{
 			$this->pos *= -1;
-			$level = (Int)$this->old/9;
-
-			for($i = $this->new + $this->pos;$i>=0&&$i<45;)
-			{
-				if($this->pos == 1 || $this->pos == -1)
-				{
-					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && $i/9 == $level)
-					{
-						$this->curr[$i] = 0;
-						$i += $this->pos;
-						$player_change = false;				//If pawns are removed then same player plays next turn
-					}
-					else
-						break;
-				}
-				else if($this->pos == 8 || $this->pos == 9 || $this->pos == 10)
-				{
-					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && $i/9 == ++$level)
-					{
-						$this->curr[$i] = 0;
-						$i += $this->pos;
-						$player_change = false;				//If pawns are removed then same player plays next turn
-					}
-					else
-						break;
-
-				}
-				else if($this->pos == -8 || $this->pos == -9 || $this->pos == -10)
-				{
-					if($this->s2[$i] != 0 && $this->s2[$i] != $this->player && $i/9 == --$level)
-					{
-						$this->curr[$i] = 0;
-						$i += $this->pos;
-						$player_change = false;				//If pawns are removed then same player plays next turn
-					}
-					else
-						break;
-
-				}
-			}
-
-			}
-
+		}
+		
 		$this->turn = $this->decide_turn($player_change);
-
+			
 			//Check if Player has made the winning move
 			if($this->check_win())
 			{
@@ -227,23 +236,23 @@ class game_logic
 				$status =1;				//Valid Move
 			}
 		}
-		else
+		else 
 		{
 			//Checks if move is Not made at all
 			if ($this->new == 0 && $this->old == 0)
 			{
 				$status =3;				//No move made
-			}
-			else
+			} 
+			else 
 			{
 				$status =4;				//Invalid Move
 			}
 		}
-
-		$returnValue = $status.','.$this->curr.','.$this->turn;
+				
+		$returnValue = $status.','.$this->curr.','.$this->new.','.$this->turn;
 		return $returnValue;
 	}
-
+	
 	function decide_turn($player_change)
 	{
 		$next_player = $this->player;
@@ -253,26 +262,36 @@ class game_logic
 				$empty_count = 0;
 				$empty_nodes = array();
 				$k = 0;
-
+				
 				if(($this->new % 2) == 0)
 				{
 					$valid = array("-10", "-9", "-8", "-1", "1", "8", "9", "10");
 				}
-				else
+				else 
 				{
-					$valid = array("-9", "-1", "1", "9");
+					$valid = array("-9", "-1", "1", "9"); 
 				}
-
-				for($i=0; $i<sizeof($valid)-1; $i++)
+				
+				for($i=0; $i<sizeof($valid)-1; $i++)			
 					{
 						if(	$this->new+$valid[$i] >= 0 && $this->new+$valid[$i] <= 44)
-						{				//Check if valid moves are empty and not in the same direction
-							if($this->curr[$this->new + $valid[$i]] == 0 && $valid[$i] != $this->pos && $this->new + $valid[$i] != $this->old )
+						{	
+							//If valid moves are empty and not in the same direction
+							if($this->curr[$this->new + $valid[$i]] == 0 && $valid[$i] != $this->pos && $this->new + $valid[$i] != $this->old )	
 							{
-								$empty_nodes[$k++] = $this->new+$valid[$i];				//Add the postion to empty node array
+								//If empty node is not at the edge of the board and there is atleast 1 opponent pawn is present after the empty node
+								if($this->new+$valid[$i]+$valid[$i] >=0 && $this->new+$valid[$i]+$valid[$i] <= 44 && $this->curr[$this->new + $valid[$i] + $valid[$i]] != 0 && $this->curr[$this->new + $valid[$i] + $valid[$i]] != $this->player)
+								{
+									$empty_nodes[$k++] = $this->new+$valid[$i];				//Add the postion to empty node array
+								}
+								//If there is atleast 1 opponent pawn in the reverse direction
+								else if($this->new-$valid[$i] >=0 && $this->new-$valid[$i] <= 44 && $this->curr[$this->new - $valid[$i]] != 0 && $this->curr[$this->new - $valid[$i]] != $this->player)
+								{
+									$empty_nodes[$k++] = $this->new+$valid[$i];				//Add the postion to empty node array
+								}
 							}
 						}
-					}
+					} 
 			$empty_count = sizeof($empty_nodes);
 				for($i=0;$i<sizeof($empty_nodes)-1;$i++)
 				{
@@ -284,28 +303,33 @@ class game_logic
 						}
 					}
 				}
-
-				if($empty_count > 0)												//If atleast 1 valid move is available
+				
+					
+				if($empty_count > 0)												//If atleast 1 valid move is available 
 				{
 					$player_change=false;											//Then turn remains in the same player
 				}
 		}
-
+			
 			if($player_change)														//If turn changed switch the next player  value
 			{
-				if($this->player == 1)
+				if($this->player == 1)											
 					$next_player = 2;
 				else
 					$next_player = 1;
-
+				
 				return $next_player.','.$player_change;												//Return just the player number
 			}
-			else											//If not, return the player and add the old position and the temporary resticted move along the same direction
+			else											//If not, return the player and add the old position and the temporary resticted move along the same direction 
 			{
-				$forbidden = $this->pos+$this->new;
-				return $next_player.'.'.$player_change.','.$this->old.','.$forbidden;
+				$forbidden='';
+				if($this->pos+$this->new > -1 && $this->pos+$this->new <= 44)
+				{
+					$forbidden = $this->pos+$this->new;
+				}
+				return $next_player.','.$player_change.','.$this->old.','.$forbidden;
 			}
-
+			
 	}
 	function run_game()
 	{
@@ -313,6 +337,6 @@ class game_logic
 		$returned=$this->remove_pawn();
 		return $returned;
 	}
-}
+} 
 
 ?>

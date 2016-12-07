@@ -1,7 +1,9 @@
 // JavaScript Document
 
-var turn =0;
+var turn=0;
 var restrictedMoves = new Array();
+var forbidden = -1;
+var lockedPawn = -1;
 //Loads the node when the page loads
 $(function()
 {
@@ -11,20 +13,30 @@ $(function()
 //Gets the state of all the pawns and the player turn in the game 
 function getGameState()
 {
-	var func = "type=state";
-	var funcURL = "play_game.php";
+	var data = "type=state";
+	var url = "play_game.php";
 	$.ajax({
-		url:funcURL, 
-		data: func, 
+		url:url, 
+		data: data, 
 		type:"POST", 
 		dataType:"json",
 		success: function(response)
 							{
 								nodeList = response.node_list;
 								turn = response.player_turn;
+								a=0;
 								if(response.restricted_moves != '')
-									restrictedMoves = response.restricted_moves.split(',');
-								alert(nodeList+'---'+turn+'---'+restrictedMoves.length);
+								{	
+								   restrictedMoves = response.restricted_moves.split(',');
+									for(var i = 0; i < restrictedMoves.length; i++)
+									var a = a+restrictedMoves[i]+','; 
+								}
+								else 
+								{
+									for(var i = 0; i < restrictedMoves.length; i++)
+									restrictedMoves.pop();
+								}
+								alert(nodeList+'---'+turn+'---'+a);
 								clearBoard();
 								setPlayerColor(nodeList);
 								setPlayerTurn(turn);
@@ -41,6 +53,7 @@ function clearBoard()
 										$(this).removeClass('player1');
 										$(this).removeClass('player2');
 										$(this).removeClass('empty');
+										$(this).removeClass('restricted');
 								});
 }
 
@@ -62,13 +75,19 @@ function setPlayerColor(nodeList)
 			{
 				$(id).addClass('empty');
 			}
-	}	if(restrictedMoves.length > 0 && turn != 0)
-		{
-			for(var i=0; i<restrictedMoves.length-1;i++)
+	}	
+	if(restrictedMoves.length > 0 && turn != 0 && forbidden != -1 && lockedPawn != -1)
+		{   
+		    var index = 0;
+			for(var i=0; i<=restrictedMoves.length-1;i++)
 			{
-				var index = '#'+restrictedMoves[i];
+				index = '#'+restrictedMoves[i]; alert('r='+index);
 				$(index).removeClass('empty').addClass('restricted');
 			}
+			index = '#'+forbidden; alert('f='+index);
+			$(index).removeClass('empty').addClass('restricted');
+			index = '#'+lockedPawn; alert('l='+index);
+			$(index).addClass('selected');
 		}
 	
 	
@@ -79,6 +98,7 @@ function setPlayerTurn(turn)
 {
 	if(turn == 0)
 		{
+			
 			$('#message').text("Waiting for opponent to make a move");
 			waitForOpponent();
 		}
@@ -86,7 +106,16 @@ function setPlayerTurn(turn)
 		{
 			$('#message').text("");
 			var player = '.player'+turn;
-			$(player).each( function() { $(this).on('click',selectPawn) });
+			
+			if(restrictedMoves.length > 0 && turn != 0 && forbidden != -1 && lockedPawn != -1)
+			{
+				var index = '#'+lockedPawn;
+				$(index).on('click',selectPawn);
+			}
+			else
+			{
+				$(player).each( function() { $(this).on('click',selectPawn) });
+			}
 		}
 }
 	
@@ -192,13 +221,34 @@ function sendGameState()
 			data: data,
 			type: 'POST',
 			dataType: 'text',
-			success: function(response){	alert("Response status: "+response);
-											switch(response)
+			success: function(response){	alert(response);
+											var res = new Array();
+											res = response.split(',');
+											switch(res[0])
 											{
-												case '1': getGameState(); break;
-												case '2': winCondition(); break;
-												case '3': getGameState(); break;
-												case '4': getGameState(); break;
+												case '1': 
+													
+													if(res[1]>0)
+													{
+														lockedPawn = res[2];
+														forbidden = res[3];
+													}
+													else
+													{
+														lockedPawn = -1;
+														forbidden = -1;
+													}
+													getGameState(); 
+													break;
+												case '2': 
+													winCondition(); break;
+												case '3': 
+													getGameState(); 
+													alert("Please make a move");
+													break;
+												case '4': 
+													getGameState("Invalid Move"); 
+													break;
 											}
 										},
 			error: function() {alert("Move made Error")} 
@@ -209,10 +259,14 @@ function sendGameState()
 
 function winCondition() 
 {
-	href.location('winner.php');	
+	window.location.replace('winner.php');	
 	
 }
-
+function loseCondition() 
+{
+	window.location.replace('loser.php');	
+	
+}
 
 function waitForOpponent()
 {
@@ -233,6 +287,7 @@ function checkMoveMade()
 											{
 												case '1': getGameState(); break;
 												case '2': waitForOpponent(); break;
+												case '3': loseCondition(); break;
 											}
 										},
 			error: function() {alert("Error")} 
