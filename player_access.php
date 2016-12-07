@@ -53,7 +53,7 @@ class access
 
 				session_start();
 				if(isset($_SESSION['created']))
-				{ 
+				{
 					echo $_SESSION['created'];
 					$idle = time() - $_SESSION['created'];
 					if ($idle > 300)
@@ -156,9 +156,13 @@ class access
 
 	function sendVerification($email, $code)
 	{
+		//get link from config file
+		$config = parse_ini_file('config.php');
+		$verifylink = $config['verifylink'];
+
 		$headers='From: paurav66@yahoo.com'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
 		$subject = 'Fanorona Account Verification';
-		$link = "http://localhost/verify.php?code=$code";
+		$link = "$verifylink$code";
 		$content = "Please copy the link on your browser: $link";
 		mail($email,$subject,$content,$headers );
 	}

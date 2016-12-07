@@ -10,7 +10,7 @@ dbname = 'fanodb'
 secret = '6Lf0oAgUAAAAAD6f9YelgkesEGy7hI_N4i4f7CVX'
 
 [links]
-verifylink = 'http://localhost/verify.php?code='
+verifylink = 'https://nitinkaveriappa.pro/verify.php?code='
 
 [log]
 logfile = 'log.log'
