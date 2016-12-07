@@ -41,22 +41,12 @@ window.onload = getStats();
         <span class="Logout" style="float:right"><a href="logout.php">logout</a></span>
     </div>
 </div>
-<span id="welcometxt"><b>Welcome </b></span>
 <div class="contents" align="center">
 	
     <div class="contentData">
-	
-    	<button class="button" id="newGameBttn" onClick="newGame()">NEW GAME</button>
-     	<button class="button" id="joinGameBttn" onClick="joinGame()">JOIN GAME</button><br/>
-        <span id='gameStatus'></span>
-    	<br/><br/>
-        <table class="statsTable" cellspacing="0px" align="center">
-        	<tr><td><b>Player Name</b></td><td align="center" id="playerName"></td></tr>
-        	<tr><td><b>Games Played</b></td><td align="center" id="gamesCOunt"></td></tr>
-       		<tr><td><b>Games Won</b></td><td align="center" id="winCount"></td></tr>
-        	<tr><td><b>Games Drawn</b></td><td align="center" id="drawCOunt"></td></tr>
-        	<tr><td><b>Games Loss</b></td><td align="center" id="lossCOunt"></td></tr>
-        </table>
+		<p> YOU LOST!!! <br/>
+       		<a href="home.php">Back to homepage..</a>
+        </p>    	
     </div>  
 </div>
 

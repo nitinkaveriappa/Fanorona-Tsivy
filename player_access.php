@@ -6,11 +6,9 @@ class access
 
 	function login_player($userName,$userPassword)
 	{
-		include('log.php');
 		include('dbconnect.php');
 
 		$loginQuery = $connection->prepare("SELECT a.* ,b.login_flag FROM pl_mst a, flg_ls b WHERE player_email=:mailID and b.player_id = a.player_id ;");
-		log_it("Database connection login check successful");
 		$loginQuery->bindParam(':mailID',$userName);
 		$loginQuery->execute();
 		$loginResultCount = $loginQuery->rowCount();
@@ -41,13 +39,12 @@ class access
 				$setFlagQuery->bindParam(':playerId',$loginResultRow['player_id']);
 				$setFlagQuery->execute();
 
-				log_it("$userName user login successful");
 				header("Location:home.php");
 			}
 			//if user needs to reconnect after abrupt disconnection from the game
 			else if(password_verify($userPassword, $cryptedPassword) && $verifiedFlag == 1 && $loginFlag == 1)
 			{
-				$checkGameQuery= $connection->prepare("SELECT game_id,game_end FROM gm_mst WHERE player_id_1=:playerId or player_id_2=:playerId;");
+				$checkGameQuery= $connection->prepare("SELECT game_id,game_end FROM gm_mst WHERE player_id_1=:playerId OR player_id_2=:playerId;");
 				$checkGameQuery->bindParam(':playerId',$loginResultRow['player_id']);
 				$checkGameQuery->execute();
 				$checkGameResult = $checkGameQuery->fetch(PDO::FETCH_ASSOC);
@@ -55,23 +52,22 @@ class access
 				$game_id = $checkGameResult['game_id'];
 
 				session_start();
-				if(isset($_SESSION))
-				{
+				if(isset($_SESSION['created']))
+				{ 
+					echo $_SESSION['created'];
 					$idle = time() - $_SESSION['created'];
 					if ($idle > 300)
 					{
-						log_it("$userName user logged out forcefully (Session Timout)");
+						echo $idle. $_SESSION['player_id'];
 						header('Location:logout.php');
 					}
 
 					if($idle < 300 && $_SESSION['game_id'] == $game_id && $_SESSION['player_id'] == $loginResultRow['player_id'])
 					{
-						log_it("$userName user re-join game successful");
 						header("Location:game.php");
 					}
 					else if($idle < 300 && $_SESSION['player_id'] == $loginResultRow['player_id'])
 					{
-						log_it("$userName user re-login successful");
 						header("Location:home.php");
 					}
 				}
@@ -82,15 +78,14 @@ class access
 			}
 	  	}
 		else
-			{
-				header("Location:index.html?type=err");
-			}
+		{
+			header("Location:index.html?type=err");
+		}
 	}
 
 
 	function register_player($playerName, $playerEmail, $playerPassword)
 	{
-		include('log.php');
 		include('dbconnect.php');
 		//Finds the latest player ID and increments it
 		$getRowQuery = $connection->prepare("SELECT player_id FROM pl_mst ORDER BY player_id DESC LIMIT 1;");
@@ -155,20 +150,15 @@ class access
 		//Sends the verification url to member
 		$this->sendVerification($playerEmail,$code);
 
-		log_it("$playerEmail registration successful, pending verification");
 		header('Location:index.html');
 	}
 
 
 	function sendVerification($email, $code)
 	{
-		//get verifylink
-			$config = parse_ini_file('config.php');
-			$verifylink = $config['verifylink'];
-
-		$headers='From: nitinkaveriappa@yahoo.in'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
+		$headers='From: paurav66@yahoo.com'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
 		$subject = 'Fanorona Account Verification';
-		$link = "$verifylink$code";
+		$link = "http://localhost/verify.php?code=$code";
 		$content = "Please copy the link on your browser: $link";
 		mail($email,$subject,$content,$headers );
 	}

@@ -71,7 +71,7 @@ class setup
 			//Check if opponent has update the game tuple
 			$checkOpponentQuery = $connection->prepare("SELECT game_id FROM gm_mst WHERE game_id=:gameId and player_id_2 != 0 and player_id_2 != :playerId;");
 			$checkOpponentQuery->bindParam(':gameId',$gameId);
-			$checkOpponentQuery->bindParam(':playerId',$player1);
+			$checkOpponentQuery->bindParam(':playerId',$playerId);
 			$checkOpponentQuery->execute();
 			//If opponent has joined return the Game ID
 			if($checkOpponentQuery->rowCount() == 1)

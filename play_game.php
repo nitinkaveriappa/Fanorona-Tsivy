@@ -59,9 +59,9 @@ function play_move()
 		
 		$returned = explode(',',$returnValues);
 		$response = $returned[0];
-//echo "$response---$new_node_list---$next_player---$restricted_moves---$forbidden_move---$player_change";		
+	
 		//If the move made is valid
-		if($response == 1 || $response == 2)
+		if($response == 1)
 		{
 			$new_node_list = $returned[1];
 			
@@ -111,9 +111,26 @@ function play_move()
 			$insertNewNodeQuery->bindParam(':moveCount',$move_count);
 			$insertNewNodeQuery->execute();
 			
-			//If the player won
-			if($response == 2)
-			{
+		echo $response.','.$move_count.','.$locked_pawn.','.$forbidden_move;
+		}
+		
+		//If the player won
+		if($response == 2)
+		{
+			$new_node_list = $returned[1];			
+			++$move_count;				
+			$restricted_moves = '';
+			
+			$insertNewNodeQuery = $connection->prepare("INSERT INTO gm_st(game_id,player_id,node_list,restricted_moves, move_count) VALUES(:gameID,:playerID,:nodeList, :restrictedMoves,:moveCount);");
+			
+			//Update the game state
+			$insertNewNodeQuery->bindParam(':gameID',$game_id);
+			$insertNewNodeQuery->bindParam(':playerID',$player_id);
+			$insertNewNodeQuery->bindParam(':nodeList', $new_node_list);
+			$insertNewNodeQuery->bindParam(':restrictedMoves',$restricted_moves);
+			$insertNewNodeQuery->bindParam(':moveCount',$move_count);
+			$insertNewNodeQuery->execute();
+			
 			//Update the game with end time
 			$endTime = date('Y-m-d H:i:s');
 			$updateNewGameQuery = $connection->prepare("UPDATE gm_mst SET game_end=:endTime WHERE game_id=:gameId ;");
@@ -140,11 +157,8 @@ function play_move()
 			$updateInGameFlagQuery->bindParam(':playerId',$player_id);
 			$updateInGameFlagQuery->execute();
 			
+			echo $response;
 			}
-			
-		}
-		
-		echo $response.','.$move_count.','.$locked_pawn.','.$forbidden_move;
 	}
 	
 	$connection = null;
