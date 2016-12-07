@@ -11,7 +11,6 @@ class game_logic
 	var $old;
 	var $player;
 	var $turn;
-	var $x;
 		
 	//Set variables
 	function __construct($node1, $node2, $move_count, $restrict_moves){
@@ -92,7 +91,7 @@ class game_logic
 		{
 			if($this->new == $this->restrict_move[$i])
 			{
-				$validate = false;		$this->x.="d";	//echo "Cant move to same spot";	
+				$validate = false;			//echo "Cant move to same spot";	
 			}
 		}
 		return $validate;

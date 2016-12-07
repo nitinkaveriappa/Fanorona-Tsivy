@@ -28,15 +28,12 @@ function getGameState()
 								if(response.restricted_moves != '')
 								{	
 								   restrictedMoves = response.restricted_moves.split(',');
-									for(var i = 0; i < restrictedMoves.length; i++)
-									var a = a+restrictedMoves[i]+','; 
 								}
 								else 
 								{
 									for(var i = 0; i < restrictedMoves.length; i++)
 									restrictedMoves.pop();
 								}
-								alert(nodeList+'---'+turn+'---'+a);
 								clearBoard();
 								setPlayerColor(nodeList);
 								setPlayerTurn(turn);
@@ -81,12 +78,15 @@ function setPlayerColor(nodeList)
 		    var index = 0;
 			for(var i=0; i<=restrictedMoves.length-1;i++)
 			{
-				index = '#'+restrictedMoves[i]; alert('r='+index);
+				index = '#'+restrictedMoves[i]; 
 				$(index).removeClass('empty').addClass('restricted');
 			}
-			index = '#'+forbidden; alert('f='+index);
-			$(index).removeClass('empty').addClass('restricted');
-			index = '#'+lockedPawn; alert('l='+index);
+			index = '#'+forbidden; 
+			if($(index).hasClass('empty'))
+			{
+				$(index).removeClass('empty').addClass('restricted');
+			}
+			index = '#'+lockedPawn;
 			$(index).addClass('selected');
 		}
 	
@@ -221,7 +221,7 @@ function sendGameState()
 			data: data,
 			type: 'POST',
 			dataType: 'text',
-			success: function(response){	alert(response);
+			success: function(response){	
 											var res = new Array();
 											res = response.split(',');
 											switch(res[0])
@@ -247,7 +247,8 @@ function sendGameState()
 													alert("Please make a move");
 													break;
 												case '4': 
-													getGameState("Invalid Move"); 
+													getGameState();
+													alert("Invalid Move"); 
 													break;
 											}
 										},
@@ -282,7 +283,7 @@ function checkMoveMade()
 			data: data,
 			type: 'POST', 
 			dataType: 'text',
-			success: function(response){	alert("Response="+response);
+			success: function(response){	
 											switch(response)
 											{
 												case '1': getGameState(); break;

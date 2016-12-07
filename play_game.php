@@ -111,7 +111,8 @@ function play_move()
 			$insertNewNodeQuery->bindParam(':moveCount',$move_count);
 			$insertNewNodeQuery->execute();
 			
-		echo $response.','.$move_count.','.$locked_pawn.','.$forbidden_move;
+			$result = $response.','.$move_count.','.$locked_pawn.','.$forbidden_move;
+		echo htmlspecialchars($result);
 		}
 		
 		//If the player won
@@ -157,7 +158,7 @@ function play_move()
 			$updateInGameFlagQuery->bindParam(':playerId',$player_id);
 			$updateInGameFlagQuery->execute();
 			
-			echo $response;
+			echo htmlspecialchars($response);
 			}
 	}
 	
@@ -221,7 +222,9 @@ function check_move()
 		$response = 3;
 		
 	}
-	echo $response;
+	
+	//OUTPUT
+	echo htmlspecialchars($response);
 	
 	$connection = null;
 }
@@ -277,7 +280,7 @@ else {
 	if($response === false)
 		echo "$arr";
 	else
-		echo $response;
+		echo htmlspecialchars($response);			//OUTPUT
 	
 	
 

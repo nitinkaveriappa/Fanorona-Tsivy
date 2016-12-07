@@ -38,7 +38,6 @@ else if($idle > 120)
         <span class="Logout" style="float:right"><a href="logout.php">logout</a></span>
     </div>
 </div>
-<span id="welcometxt"><b>Welcome </b></span>
 <div class="contents" align="center">
 	
     <div class="contentData">
