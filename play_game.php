@@ -36,7 +36,7 @@ function play_move()
 	require_once('dbconnect.php');
 	if(isset($_POST['nodeList']) && $_POST['nodeList']!='' && $_POST['nodeList']!='Error')
 	{
-		$s2 = $_POST['nodeList'];	
+		$s2 = $_POST['nodeList'];
 		$game_id=$_SESSION['game_id'];
 		$player_id=$_SESSION['player_id'];
 		$forbidden_move ='';
@@ -53,21 +53,21 @@ function play_move()
 		$s1=$result['node_list'];
 		$move_count=$result['move_count'];
 		$restricted_moves=$result['restricted_moves'];
-		
+
 		$start = new game_logic($s1,$s2,$move_count,$restricted_moves);
 		$returnValues = $start->run_game();
-		
+
 		$returned = explode(',',$returnValues);
 		$response = $returned[0];
-	
+
 		//If the move made is valid
 		if($response == 1)
 		{
 			$new_node_list = $returned[1];
-			
+
 			$next_player = $returned[3];
 			$player_change = $returned[4];
-	
+
 			if(!$player_change)
 			{
 				$locked_pawn = $returned[2];
@@ -78,7 +78,7 @@ function play_move()
 				}
 				$restricted_moves .=  $returned[5];
 				$forbidden_move = $returned[6];
-				++$move_count;				
+				++$move_count;
 			}
 			else
 			{
@@ -87,8 +87,8 @@ function play_move()
 				$forbidden_move = '';
 				$move_count = 1;
 			}
-		
-	
+
+
 			//Get both player id in the game
 			$getPlayersQuery = $connection->prepare("SELECT player_id_1, player_id_2 FROM fanodb.gm_mst WHERE game_id=:gameID;");
 			$getPlayersQuery->bindParam(':gameID',$game_id);
@@ -96,34 +96,34 @@ function play_move()
 			$players_result = $getPlayersQuery->fetch(PDO::FETCH_ASSOC);
 			$player_id_1=$players_result['player_id_1'];
 			$player_id_2=$players_result['player_id_2'];
-			
+
 			$insertNewNodeQuery = $connection->prepare("INSERT INTO gm_st(game_id,player_id,node_list,restricted_moves, move_count) VALUES(:gameID,:playerID,:nodeList, :restrictedMoves,:moveCount);");
-			
+
 			$insertNewNodeQuery->bindParam(':gameID',$game_id);
-			
+
 			if($next_player == 1)
 					$insertNewNodeQuery->bindParam(':playerID',$player_id_1);
 			else
 					$insertNewNodeQuery->bindParam(':playerID',$player_id_2);
-			
+
 			$insertNewNodeQuery->bindParam(':nodeList', $new_node_list);
 			$insertNewNodeQuery->bindParam(':restrictedMoves',$restricted_moves);
 			$insertNewNodeQuery->bindParam(':moveCount',$move_count);
 			$insertNewNodeQuery->execute();
-			
+
 			$result = $response.','.$move_count.','.$locked_pawn.','.$forbidden_move;
 		echo htmlspecialchars($result);
 		}
-		
+
 		//If the player won
 		if($response == 2)
 		{
-			$new_node_list = $returned[1];			
-			++$move_count;				
+			$new_node_list = $returned[1];
+			++$move_count;
 			$restricted_moves = '';
-			
+
 			$insertNewNodeQuery = $connection->prepare("INSERT INTO gm_st(game_id,player_id,node_list,restricted_moves, move_count) VALUES(:gameID,:playerID,:nodeList, :restrictedMoves,:moveCount);");
-			
+
 			//Update the game state
 			$insertNewNodeQuery->bindParam(':gameID',$game_id);
 			$insertNewNodeQuery->bindParam(':playerID',$player_id);
@@ -131,14 +131,14 @@ function play_move()
 			$insertNewNodeQuery->bindParam(':restrictedMoves',$restricted_moves);
 			$insertNewNodeQuery->bindParam(':moveCount',$move_count);
 			$insertNewNodeQuery->execute();
-			
+
 			//Update the game with end time
 			$endTime = date('Y-m-d H:i:s');
 			$updateNewGameQuery = $connection->prepare("UPDATE gm_mst SET game_end=:endTime WHERE game_id=:gameId ;");
 			$updateNewGameQuery->bindParam(':endTime',$endTime);
 			$updateNewGameQuery->bindParam(':gameId',$game_id);
 			$updateNewGameQuery->execute();
-			
+
 			//Get and Update the player stats
 			$getPlayerStatsQuery = $connection->prepare("SELECT win_count FROM pl_sts WHERE player_id=:playerId");
 			$getPlayerStatsQuery->bindParam(':playerId',$player_id);
@@ -150,18 +150,18 @@ function play_move()
 			$updatePlayerStatsQuery->bindParam(':winCount',$win_count);
 			$updatePlayerStatsQuery->bindParam(':playerId',$player_id);
 			$updatePlayerStatsQuery->execute();
-			
+
 			//Unset the in game flag
 			$flag=0;
 			$updateInGameFlagQuery = $connection->prepare("UPDATE flg_ls SET ingame_flag=:inGame WHERE player_id=:playerId");
 			$updateInGameFlagQuery->bindParam(':inGame',$flag);
 			$updateInGameFlagQuery->bindParam(':playerId',$player_id);
 			$updateInGameFlagQuery->execute();
-			
-			echo htmlspecialchars($response);
+
+			echo $response;
 			}
 	}
-	
+
 	$connection = null;
 }
 
@@ -172,14 +172,14 @@ function check_move()
 	$game_id = $_SESSION['game_id'];
 	$player_id = $_SESSION['player_id'];
 	$response = 2;
-	
+
 	//Check if game is over
 	$checkPlayerLossQuery = $connection->prepare("SELECT game_end FROM gm_mst WHERE game_id=:gameId");
 	$checkPlayerLossQuery->bindParam(':gameId',$game_id);
 	$checkPlayerLossQuery->execute();
 	$checkPlayerLossResult = $checkPlayerLossQuery->fetch(PDO::FETCH_ASSOC);
 	$game_end = $checkPlayerLossResult['game_end'];
-	
+
 	if($game_end == '')
 	{
 		//Get the next player id from game state table
@@ -188,8 +188,8 @@ function check_move()
 		$checkPlayerQuery->execute();
 		$checkPlayerResult = $checkPlayerQuery->fetch(PDO::FETCH_ASSOC);
 		$next_player = $checkPlayerResult['player_id'];
-		
-		//If the id is equal current player id send 1 
+
+		//If the id is equal current player id send 1
 		if($next_player == $player_id)
 		{
 			$response = 1;
@@ -200,7 +200,7 @@ function check_move()
 		}
 	}
 	else
-	{	
+	{
 		//Get and Update the player stats
 		$getPlayerStatsQuery = $connection->prepare("SELECT loss_count FROM pl_sts WHERE player_id=:playerId");
 		$getPlayerStatsQuery->bindParam(':playerId',$player_id);
@@ -212,7 +212,7 @@ function check_move()
 		$updatePlayerStatsQuery->bindParam(':lossCount',$loss_count);
 		$updatePlayerStatsQuery->bindParam(':playerId',$player_id);
 		$updatePlayerStatsQuery->execute();
-		
+
 		//Unset the in game flag
 		$flag=0;
 		$updateInGameFlagQuery = $connection->prepare("UPDATE flg_ls SET ingame_flag=:inGame WHERE player_id=:playerId");
@@ -220,16 +220,16 @@ function check_move()
 		$updateInGameFlagQuery->bindParam(':playerId',$player_id);
 		$updateInGameFlagQuery->execute();
 		$response = 3;
-		
+
 	}
-	
+
 	//OUTPUT
-	echo htmlspecialchars($response);
-	
+	echo $response;
+
 	$connection = null;
 }
 
-//Sends the current node state 
+//Sends the current node state
 function send_state()
 {
 	require_once('dbconnect.php');
@@ -246,7 +246,7 @@ function send_state()
 	$move_count=$result['move_count'];
 	$restricted_moves=$result['restricted_moves'];
 	$turn=$result['player_id'];
-	
+
 	//Get both player id in the game
 	$query2 = "SELECT player_id_1, player_id_2 FROM fanodb.gm_mst WHERE game_id=:gameID;";
 	$dataQuery2 = $connection->prepare($query2);
@@ -259,10 +259,10 @@ function send_state()
  //Check if the next turn is of current player
  if($player_id==$turn)
  {
-	//Check if the current player is player 1 then return 1 
+	//Check if the current player is player 1 then return 1
 	if($player_id_1==$player_id)
 	{
-		$playa=1;					
+		$playa=1;
 	}
 	//Check if the current player is player 2 then return 2
 	else if($player_id_2==$player_id) {
@@ -273,16 +273,16 @@ function send_state()
 else {
 		$playa=0;
 	}
-	
+
 	$arr = array("node_list" => "$s1", "move_count" => "$move_count", "restricted_moves" => "$restricted_moves", "player_turn" => "$playa");
     header("Content-Type: application/json; charset=utf-8");
 	$response =  json_encode($arr);
 	if($response === false)
 		echo "$arr";
 	else
-		echo htmlspecialchars($response);			//OUTPUT
-	
-	
+		echo $response;			//OUTPUT
+
+
 
 	$connection = null;
 }
