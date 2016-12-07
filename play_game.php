@@ -112,7 +112,7 @@ function play_move()
 			$insertNewNodeQuery->execute();
 
 			$result = $response.','.$move_count.','.$locked_pawn.','.$forbidden_move;
-		echo htmlspecialchars($result);
+		echo $result;
 		}
 
 		//If the player won
