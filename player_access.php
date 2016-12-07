@@ -160,7 +160,7 @@ class access
 		$config = parse_ini_file('config.php');
 		$verifylink = $config['verifylink'];
 
-		$headers='From: paurav66@yahoo.com'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
+		$headers='From: nitinkaveriappa@yahoo.in'. "\r\n" .'MIME-Version: 1.0' . "\r\n" .'Content-type: text/html; charset=utf-8' ."\r\n" .'X-Mailer: PHP/' . phpversion();
 		$subject = 'Fanorona Account Verification';
 		$link = "$verifylink$code";
 		$content = "Please copy the link on your browser: $link";
