@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 $obj = new setup();
@@ -28,28 +28,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
 class setup
 {
-	
+
 	function newGame()
 	{
 		include('dbconnect.php');
 		$playerId = $_SESSION['player_id'];
-		
-		//Sets the lobby flag as 1 
+
+		//Sets the lobby flag as 1
 		$setLobbyFlagQuery = $connection->prepare("UPDATE flg_ls SET lobby_flag=1 WHERE player_id=:playerId ;");
 		$setLobbyFlagQuery->bindParam(':playerId',$playerId);
 		$setLobbyFlagQuery->execute();
-		//Creates a new game entry 
+		//Creates a new game entry
 		$getRowQuery = $connection->prepare("SELECT game_id FROM gm_mst ORDER BY game_id DESC LIMIT 1;");
 		$getRowQuery->execute();
-	
+
 		if($getRowQuery->rowCount() > 0)
-		{	
+		{
 			$getRowResult = $getRowQuery->fetch(PDO::FETCH_ASSOC);
 			$gameId = $getRowResult['game_id'];
 			$gameId++;
 		}
 		else
-		{ 
+		{
 			$gameId =10000;
 		}
 		$gameStart = '1000-01-01 00:00:00';				//Game has not actually started
@@ -63,11 +63,12 @@ class setup
 		$addNewGameQuery->execute();
 		$addNewGameQuery=null;
 		//Wait for opponent to join for 100 seconds
-		$time = time();		
+		$time = time();
 		$timeout = time()+100000;
 		while($time<$timeout)
 		{
-			$time++;
+			$time+=100;
+			sleep(10);
 			//Check if opponent has update the game tuple
 			$checkOpponentQuery = $connection->prepare("SELECT game_id FROM gm_mst WHERE game_id=:gameId and player_id_2 != 0 and player_id_2 != :playerId;");
 			$checkOpponentQuery->bindParam(':gameId',$gameId);
@@ -76,14 +77,14 @@ class setup
 			//If opponent has joined return the Game ID
 			if($checkOpponentQuery->rowCount() == 1)
 			{
-				//Set InGame Flag as 1 
+				//Set InGame Flag as 1
 				$setInGameFlagQuery = $connection->prepare("UPDATE flg_ls SET ingame_flag=1 WHERE player_id=:playerId ;");
 				$setInGameFlagQuery->bindParam(':playerId',$playerId);
 				$setInGameFlagQuery->execute();
 				$setInGameFlagQuery = null;
 				//Sets the game id as session variable
 				$_SESSION['game_id'] = $gameId;
-				
+
 				//Creates the node list with initial state
 				$setInitialNodeState = $connection->prepare("INSERT INTO gm_st(game_id,player_id,move_count,node_list) VALUE(:gameId,:playerId,:moveCount,:nodeList)");
 				$moveCount = 0;
@@ -93,11 +94,11 @@ class setup
 				$setInitialNodeState->bindParam(':moveCount',$moveCount);
 				$setInitialNodeState->bindParam(':nodeList',$nodeList);
 				$setInitialNodeState->execute();
-				
+
 				echo "Connected";
 				break;
 			}
-			
+
 		}
 		//Revert Lobby Flag to 0 if new game has started or no opponent was found
 		$setLobbyFlagQuery = $connection->prepare("UPDATE flg_ls SET lobby_flag=0 WHERE player_id=:playerId ;");
@@ -106,9 +107,9 @@ class setup
 		$connection=null;
 		echo "";
 	}
-	
-	
-	
+
+
+
 	function joinGame()
 	{
 		include('dbconnect.php');
@@ -116,7 +117,7 @@ class setup
 		//Obtain a list of players in the lobby
 		$searchPlayerQuery = $connection->query("SELECT player_id FROM flg_ls WHERE lobby_flag=1");
 		$searchPlayerQuery->execute();
-		//If player are waiting in the lobby		
+		//If player are waiting in the lobby
 		if($searchPlayerQuery->rowCount() > 0)
 		{
 			//Fetches a random player from the result
@@ -126,14 +127,14 @@ class setup
 			}
 			$player_id_1 = $row['player_id'];
 			$searchPlayerQuery=null;
-			
+
 			//Finds the new game tuple created by the opponent
 			$getNewGameQuery = $connection->prepare("SELECT game_id FROM gm_mst WHERE player_id_1=:player1 and player_id_2=0 ORDER by game_id DESC LIMIT 1;");
 			$getNewGameQuery->bindParam(':player1',$player_id_1);
 			$getNewGameQuery->execute();
 			$result = $getNewGameQuery->fetch(PDO::FETCH_ASSOC);
 			$gameId = $result['game_id'];
-			
+
 			//Update the new game with Player id and start time
 			$startTime = date('Y-m-d H:i:s');
 			$updateNewGameQuery = $connection->prepare("UPDATE gm_mst SET player_id_2=:player2, game_start=:startTime WHERE game_id=:gameId ;");
@@ -141,15 +142,15 @@ class setup
 			$updateNewGameQuery->bindParam(':startTime',$startTime);
 			$updateNewGameQuery->bindParam(':gameId',$gameId);
 			$updateNewGameQuery->execute();
-			
-			//Set InGame Flag as 1 
+
+			//Set InGame Flag as 1
 			$setInGameFlagQuery = $connection->prepare("UPDATE flg_ls SET ingame_flag=1 WHERE player_id=:playerId ;");
 			$setInGameFlagQuery->bindParam(':playerId',$player_id_2);
 			$setInGameFlagQuery->execute();
-			
+
 			//Sets the game id as session variable
 			$_SESSION['game_id'] = $gameId;
-			
+
 			echo "Connected";
 		}
 		else
