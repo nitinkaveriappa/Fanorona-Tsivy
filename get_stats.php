@@ -8,12 +8,12 @@ class stats
 	var $win_count;
 	var $draw_count;
 	var $loss_count;
-
+	
 	function __construct($info)
 	{
 		$this->player_id = $info;
 	}
-
+	
 	function get_the_stats()
 	{
 		require_once('dbconnect.php');
@@ -23,28 +23,18 @@ class stats
 		$runQuery->execute();
 		// set the resulting array to associative
 		$result = $runQuery->fetch(PDO::FETCH_ASSOC);
-		$this->player_name = $result['player_name'];
-		$this->win_count = $result['win_count'];
-		$this->draw_count = $result['draw_count'];
-		$this->loss_count = $result['loss_count'];
+		$this->player_name = htmlspecialchars($result['player_name']);
+		$this->win_count = htmlspecialchars($result['win_count']);
+		$this->draw_count = htmlspecialchars($result['draw_count']);
+		$this->loss_count = htmlspecialchars($result['loss_count']);
 		$connection = null;
 	}
-
-	function xssafe($data,$encoding='UTF-8')
-	{
-  	return htmlspecialchars($data,ENT_QUOTES | ENT_HTML401,$encoding);
-	}
-	function xecho($data)
-	{
-   	echo xssafe($data);
-	}
-
+	
 	function print_stats()
 	{
-		$result = $this->player_name."#".$this->win_count."#".$this->draw_count."#".$this->loss_count;
-		xecho ("$result");
+		echo $this->player_name."#".$this->win_count."#".$this->draw_count."#".$this->loss_count;
 	}
-
+	
 	function run_stats()
 	{
 		$this->get_the_stats();

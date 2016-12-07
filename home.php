@@ -52,10 +52,10 @@ window.onload = getStats();
     	<br/><br/>
         <table class="statsTable" cellspacing="0px" align="center">
         	<tr><td><b>Player Name</b></td><td align="center" id="playerName"></td></tr>
-        	<tr><td><b>Games Played</b></td><td align="center" id="gamesCOunt"></td></tr>
+        	<tr><td><b>Games Played</b></td><td align="center" id="gamesCount"></td></tr>
        		<tr><td><b>Games Won</b></td><td align="center" id="winCount"></td></tr>
-        	<tr><td><b>Games Drawn</b></td><td align="center" id="drawCOunt"></td></tr>
-        	<tr><td><b>Games Loss</b></td><td align="center" id="lossCOunt"></td></tr>
+        	<tr><td><b>Games Drawn</b></td><td align="center" id="drawCount"></td></tr>
+        	<tr><td><b>Games Loss</b></td><td align="center" id="lossCount"></td></tr>
         </table>
     </div>  
 </div>
