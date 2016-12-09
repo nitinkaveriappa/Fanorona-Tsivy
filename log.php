@@ -25,9 +25,13 @@ function log_it($message)
   $date = date("Y-m-d H:i:s", $time);
 
   // Append to the log file
-  $writelog = @fopen($logfile, "a");
-  $logdata = fputcsv($writelog, array($date, $remote_addr, $request_uri, $message));
-  fclose($writelog);
+  if(file_exists($logfile))
+  {
+  	$writelog = @fopen($logfile, "a");
+  	$logdata = fputcsv($writelog, array($date, $remote_addr, $request_uri, $message));
+  	fclose($writelog);
+  }
+
 }
 //Test if log.php is working or not
 //$test = log_it("test logger");
