@@ -27,7 +27,7 @@ function log_it($message)
   // Append to the log file
   if(file_exists($logfile))
   {
-  	$writelog = @fopen($logfile, "a");
+  	$writelog = fopen($logfile, "a");
   	$logdata = fputcsv($writelog, array($date, $remote_addr, $request_uri, $message));
   	fclose($writelog);
   }
