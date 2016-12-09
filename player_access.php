@@ -22,7 +22,7 @@ class access
 			$cryptedPassword = $loginResultRow['player_password'];
 			$verifiedFlag = $loginResultRow['player_verified'];
 			$loginFlag = $loginResultRow['login_flag'];
-			
+
 			//If password matches and user is verified
 			if(password_verify($userPassword, $cryptedPassword) && $verifiedFlag == 1 && $loginFlag == 0)
 			{
@@ -54,7 +54,7 @@ class access
 
 				session_start();
 				if(isset($_SESSION['created']))
-				{ 
+				{
 					$idle = time() - $_SESSION['created'];
 					if ($idle > 300)
 					{

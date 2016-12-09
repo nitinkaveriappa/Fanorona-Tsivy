@@ -1,4 +1,5 @@
 <?php
+set_time_limit(0);
 session_start();
 
 $obj = new setup();
@@ -67,7 +68,7 @@ class setup
 		$timeout = time()+100000;
 		while($time<$timeout)
 		{
-			$time+=100;
+			$time=$time+100;
 			sleep(10);
 			//Check if opponent has update the game tuple
 			$checkOpponentQuery = $connection->prepare("SELECT game_id FROM gm_mst WHERE game_id=:gameId and player_id_2 != 0 and player_id_2 != :playerId;");

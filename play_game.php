@@ -34,6 +34,7 @@ if(isset($_REQUEST['type']))
 function play_move()
 {
 	require_once('dbconnect.php');
+	include('log.php');
 	if(isset($_POST['nodeList']) && $_POST['nodeList']!='' && $_POST['nodeList']!='Error')
 	{
 		$s2 = $_POST['nodeList'];
