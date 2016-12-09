@@ -4,7 +4,7 @@
 session_start();
 $name = $_SESSION['player_name'];
 $idle = time() - $_SESSION['created'];
-if ($idle > 3000)
+if ($idle > 300)
 {
 	header('Location:logout.php');
 }
