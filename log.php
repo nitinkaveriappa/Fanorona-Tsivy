@@ -4,7 +4,7 @@ function log_it($message)
 {
   $config = parse_ini_file('config.php');
   $logfile = $config['logfile'];
-
+  
   // Get time of request
   if( ($time = $_SERVER['REQUEST_TIME']) == '') {
     $time = time();
